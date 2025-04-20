@@ -22,6 +22,10 @@ public class WeatherClient {
         this.restTemplate = builder.build();
     }
 
+    /**
+     * if-else 구조에서 else 부분을 삭제하고 바로 return을 받는 구조로 변경.
+     * early return 구조로 작성하여 가독성이 올라감. 유지보수도 쉬움.
+     */
     public String getTodayWeather() {
         ResponseEntity<WeatherDto[]> responseEntity =
                 restTemplate.getForEntity(buildWeatherApiUri(), WeatherDto[].class);
@@ -29,11 +33,11 @@ public class WeatherClient {
         WeatherDto[] weatherArray = responseEntity.getBody();
         if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             throw new ServerException("날씨 데이터를 가져오는데 실패했습니다. 상태 코드: " + responseEntity.getStatusCode());
-        } else {
-            if (weatherArray == null || weatherArray.length == 0) {
+        }
+        if (weatherArray == null || weatherArray.length == 0) {
                 throw new ServerException("날씨 데이터가 없습니다.");
             }
-        }
+
 
         String today = getCurrentDate();
 
