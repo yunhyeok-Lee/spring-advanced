@@ -33,6 +33,10 @@ class CommentServiceTest {
     @InjectMocks
     private CommentService commentService;
 
+    /**
+     * given(todoRepository.findById(anyLong())) 을
+     * given(todoRepository.findById(todoId)) 로 수정.
+     */
     @Test
     public void comment_등록_중_할일을_찾지_못해_에러가_발생한다() {
         // given
@@ -40,7 +44,7 @@ class CommentServiceTest {
         CommentSaveRequest request = new CommentSaveRequest("contents");
         AuthUser authUser = new AuthUser(1L, "email", UserRole.USER);
 
-        given(todoRepository.findById(anyLong())).willReturn(Optional.empty());
+        given(todoRepository.findById(todoId)).willReturn(Optional.empty());
 
         // when
         ServerException exception = assertThrows(ServerException.class, () -> {
